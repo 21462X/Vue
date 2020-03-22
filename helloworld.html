@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <!-- 1.引入vue.js开发环境版本 -->
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+<body>
+    <h1>Hello World</h1>
+    <hr>
+    <div id="app">
+        <!-- 3.可以通过{{}}显示Vue中的数据 -->
+        <p v-if="seen">{{message}}</p>
+
+        <!-- 对象用点'.' -->
+        <h2>{{student.name}} {{student.class}}</h2>
+        <ul>
+            <!-- 数组用下标 -->
+            <li>第{{chapter[0]}}章</li>
+            <li>第{{chapter[1]}}章</li>
+            <li>第{{chapter[2]}}章</li>
+
+        </ul>
+    </div>
+
+    <script>
+        // 2. 创建vue实例，需要制定el和dataa属性
+        var app = new Vue({
+            // 指定vue监管的视图区域，只要id为app的div内部才会受vue管理
+            el:'#app',
+            // 提供了vue中使用的数据
+            data:{
+                message:'hello world!',
+                seen:false,
+                chapter:[1,2,3,4,5],
+                student:{
+                    name:'徐志摩',
+                    class:'移动班'
+                }
+            }
+        })
+    </script>
+</body>
+</html>

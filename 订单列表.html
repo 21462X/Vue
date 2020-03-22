@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单列表</title>
+    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.22/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+ 
+<body>
+	<div id="app">
+		<table id="productListTable"  class="table table-striped">
+			<thead>
+				<tr>
+					<th>商品名称</th>
+					<th>数量</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="product in products">
+					<td>{{product.productName}}</td>
+					<td>{{product.nums}}</td>
+					<td>
+						<a href="#nowhere" @click="edit(product)">编辑</a>
+						<a href="#nowhere" @click="deleteProduct(product.id)">删除</a>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3">			
+						<div class="form-group">
+                            <label for="product">商品：</label>
+                            <input type="text" class="form-control" id="product" v-model="product4Add.productName" placeholder="请输入商品名称">
+                        </div>
+                        <div class="form-group">
+                            <label for="number">数量：</label>
+                            <input type="text" class="form-control" id="number" v-model="product4Add.nums" placeholder="请输入商品数量">
+                        </div>
+                        <button type="submit" @click="add" class="btn btn-default">增加</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	
+		<div id="div4Update">
+            <div class="form-group">
+                <label for="update">商品名称:</label>
+                <input type="text" class="form-control" id="update" v-model="product4Update.productName" placeholder="请输入商品名称">
+            </div>
+            <div class="form-group">
+                <label for="number">数量：</label>
+                <input type="text" class="form-control" id="number" v-model="product4Update.nums" placeholder="请输入商品数量">
+            </div>
+            <button type="submit" @click="update" class="btn btn-default">修改</button>
+            <button type="button" @click="cancel" class="btn btn-default">取消</button>
+        </div>
+    </div>
+
+  
+    <script>
+        $("#div4Update").hide();
+        //Model
+        var data = {
+            products: [
+		        { id: 1, productName: '袜子', nums: 15},
+		        { id: 2, productName: '羊毛衫', nums: 20},
+		        { id: 3, productName: '雪纺衫', nums: 24},
+		        { id: 4, productName: '高跟鞋', nums: 30}
+            ],
+            product4Add: { id: 0, productName: '', nums: '0'},
+            product4Update: { id: 0, productName: '', nums: '0'}
+        };
+        
+        var maxId = 5;
+        for (var i=0;i<data.products.length;i++){
+            if (data.products[i].id > maxId)
+                maxId=  this.products[i].id;
+        }      
+          
+    //ViewModel
+    var vue = new Vue({
+        el: '#app',
+        data: data,
+        methods: {
+            add: function (event) {
+                maxId++;
+                this.product4Add.id = maxId;
+                if(this.product4Add.productName.length==0)
+                    this.product4Add.productName = "product-"+this.product4Add.id;
+                //将对象加入到数组
+                this.products.push(this.product4Add);
+                this.product4Add = { id: 0, productName: '', nums: '0'}
+            },
+            deleteProduct: function (id) {
+                console.log("id"+id);
+                for (var i=0;i<this.products.length;i++){
+                    if (this.products[i].id == id) {
+                        this.products.splice(i, 1);
+                        break;
+                    }
+                }
+            },
+            edit: function (product) {
+                $("#productListTable").hide();
+                $("#div4Update").show();
+                this.product4Update = product;
+            },
+            update:function(){
+                $("#productListTable").show();
+                $("#div4Update").hide();          
+            },
+            cancel:function(){
+                //恢复显示
+                $("#productListTable").show();
+                $("#div4Update").hide();
+            }
+        }
+    });
+    </script>
+</body>
+</html>

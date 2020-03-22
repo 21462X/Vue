@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <!-- 1.引入vue.js开发环境版本 -->
+    <script type="text/javascript" src="../assets/js/vue.js"></script>
+</head>
+<body>
+    <h1>Hello World</h1>
+    <hr>
+    <div id="app">
+      姓：<input type="text" v-model="exName"></input><br>
+      名：<input type="text" v-model="edName"></input><br>
+      姓名（单向）：<input type="text" placeholder="full name" v-model.lazy.trim="fullName1"><br>
+      姓名（双向）：<input type="text" placeholder="full name" v-model.lazy.trim="fullName2"><br>
+    </div>
+
+    <script>
+        // 2. 创建vue实例，需要制定el和dataa属性
+        var app = new Vue({
+            // 指定vue监管的视图区域，只要id为app的div内部才会受vue管理
+            el:'#app',
+            // 提供了vue中使用的数据
+            data:{
+               exName:'张',
+               edName:'飞',
+
+            },
+            //计算属性配置：值为对象，会缓存
+            computed:{
+                //属性的get
+                fullName1:function(){
+                    console.log('计算1次')
+                    return this.exName+''+ this.edName
+                },
+                fullName2:{
+                    get:function (){
+                        console.log("计算1次");
+                    return this.exName+''+ this.edName;
+
+                    },
+                    set:function(value){
+                        console.log(value);
+                        var arr = value.split("");
+                        this.exName = arr[0];
+                        this.edName = arr[1];
+                    }
+                }
+            },
+        })
+    </script>
+</body>
+</html>
